@@ -1,46 +1,74 @@
-let todos = [];
+// const todos = [
+//   {
+//     text: "Get up at 6",
+//     completed: true,
+//   },
+//   {
+//     text: "take bath",
+//     completed: false,
+//   },
+//   {
+//     text: "Go to college",
+//     completed: true,
+//   },
+//   {
+//     text: "Come back home",
+//     completed: false,
+//   },
+//   {
+//     text: "Sleep on the bed",
+//     completed: true,
+//   },
+// ];
+
+let todos = todoGetSaved();
 
 const filters = {
   searchText: "",
   hideCompleted: false,
 };
 
-//check for exsting or saved data
-const todoJSON = localStorage.getItem("todos");
-if (todoJSON !== null) {
-  todos = JSON.parse(todoJSON);
-}
-
-const renderTodos = function (todos, filters) {
-  const filteredTodos = todos.filter(function (todo) {
-    const searchTextMatch = todo.text
-      .toLowerCase()
-      .includes(filters.searchText.toLowerCase());
-    const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
-
-    return searchTextMatch && hideCompletedMatch;
-
-    //return todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
-  });
-
-  const incompleteTodos = filteredTodos.filter(function (todo) {
-    return !todo.completed;
-  });
-
-  document.querySelector("#todos").innerHTML = "";
-
-  const summary = document.createElement("h2");
-  summary.textContent = `You have ${incompleteTodos.length} todos left`;
-  document.querySelector("#todos").appendChild(summary);
-
-  filteredTodos.forEach(function (todo) {
-    const p = document.createElement("p");
-    p.textContent = todo.text;
-    document.querySelector("#todos").appendChild(p);
-  });
-};
-
 renderTodos(todos, filters);
+
+// const pTag = document.querySelectorAll("p");
+// console.log(pTag);
+
+// pTag.forEach(function (paragraphs) {
+//   //n.remove();
+//   if (paragraphs.textContent.includes("the")) {
+//     paragraphs.remove();
+//   }
+// });
+
+//adding a new element dynamically
+
+// const incompleteTodo = todoTask.filter(function (todo) {
+//   return !todo.completed;
+// });
+
+// const summary = document.createElement("h2");
+// summary.textContent = `You have ${incompleteTodo.length} todos left`;
+// document.querySelector("body").appendChild(summary);
+
+// todoTask.forEach(function (todo) {
+//   if (!todo.completed) {
+//     const para = document.createElement("p");
+//     para.textContent = todo.title;
+//     document.querySelector("body").appendChild(para);
+//   }
+// });
+
+//listen for new todo creation
+// document.querySelector("#add-content").addEventListener("click", function (e) {
+//   console.log("Add content");
+// });
+
+//listen for to do text change
+// document
+//   .querySelector("#new-todo-text")
+//   .addEventListener("input", function (e) {
+//     console.log(e.target.value);
+//   });
 
 document.querySelector("#search-text").addEventListener("input", function (e) {
   filters.searchText = e.target.value;
@@ -53,9 +81,9 @@ document.querySelector("#new-todo").addEventListener("submit", function (e) {
     text: e.target.elements.text.value,
     completed: false,
   });
-  localStorage.setItem("todos", JSON.stringify(todos));
+  todoSaved(todos);
   renderTodos(todos, filters);
-  e.target.elements.text.value = "";
+  e.target.elements.text.value = ""; //clears after submit is clicked
 });
 
 document.querySelector("#hide").addEventListener("change", function (e) {
