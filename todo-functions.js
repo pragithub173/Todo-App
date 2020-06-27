@@ -19,20 +19,11 @@ const renderTodos = function (todos, filters) {
       .toLowerCase()
       .includes(filters.searchText.toLowerCase());
     const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
-
+    //debugger;
     return searchTextMatch && hideCompletedMatch;
 
     //return todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
   });
-
-  // filteredTodos = filteredTodos.filter(function (todos) {
-  //   return !filters.hideCompleted || !todos.completed;
-  //   // if (filters.hideCompleted) {
-  //   //   return !todo.completed;
-  //   // } else {
-  //   //   return true;
-  //   // }
-  // });
 
   const incompleteTodos = filteredTodos.filter(function (todo) {
     return !todo.completed;
@@ -54,10 +45,26 @@ const renderTodos = function (todos, filters) {
 //generate DOM structure
 
 const generateTodoDOM = function (todo) {
-  const p = document.createElement("p");
+  const todoEl = document.createElement("div");
 
-  p.textContent = todo.text;
-  return p;
+  const checkBox = document.createElement("input");
+
+  const todoText = document.createElement("span");
+
+  const button = document.createElement("button");
+
+  //set up todo checkbox
+  checkBox.setAttribute("type", "checkbox");
+  todoEl.appendChild(checkBox);
+
+  //setup todo text
+  todoText.textContent = todo.text;
+  todoEl.appendChild(todoText);
+
+  button.textContent = "x";
+  todoEl.appendChild(button);
+
+  return todoEl;
 };
 
 const generateSummaryDOM = function (incompleteTodos) {
