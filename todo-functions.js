@@ -1,38 +1,30 @@
 //check for exsting or saved data
 
-const todoGetSaved = function () {
+const todoGetSaved = () => {
   const todoJSON = localStorage.getItem("todos");
-  if (todoJSON !== null) {
-    return JSON.parse(todoJSON);
-  } else {
-    return [];
-  }
+  return todoJSON !== null ? JSON.parse(todoJSON) : [];
 };
 
-const todoSaved = function () {
+const todoSaved = () => {
   localStorage.setItem("todos", JSON.stringify(todos));
 };
-const removeTodo = function (id) {
-  const todoIndex = todos.findIndex(function (todo) {
-    return todo.id === id;
-  });
+const removeTodo = (id) => {
+  const todoIndex = todos.findIndex((todo) => todo.id === id);
   if (todoIndex > -1) {
     todos.splice(todoIndex, 1);
   }
 };
 
 //toggeltodo
-const toogleTodo = function (id) {
-  const todo = todos.find(function (todo) {
-    return todo.id === id;
-  });
+const toogleTodo = (id) => {
+  const todo = todos.find((todo) => todo.id === id);
   if (todo !== undefined) {
     todo.completed = !todo.completed;
   }
 };
 
-const renderTodos = function (todos, filters) {
-  const filteredTodos = todos.filter(function (todo) {
+const renderTodos = (todos, filters) => {
+  const filteredTodos = todos.filter((todo) => {
     const searchTextMatch = todo.text
       .toLowerCase()
       .includes(filters.searchText.toLowerCase());
@@ -43,9 +35,7 @@ const renderTodos = function (todos, filters) {
     //return todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
   });
 
-  const incompleteTodos = filteredTodos.filter(function (todo) {
-    return !todo.completed;
-  });
+  const incompleteTodos = filteredTodos.filter((todo) => !todo.completed);
 
   document.querySelector("#todos").innerHTML = "";
 
@@ -55,14 +45,14 @@ const renderTodos = function (todos, filters) {
     .querySelector("#todos")
     .appendChild(generateSummaryDOM(incompleteTodos));
 
-  filteredTodos.forEach(function (todo) {
+  filteredTodos.forEach((todo) => {
     document.querySelector("#todos").appendChild(generateTodoDOM(todo));
   });
 };
 
 //generate DOM structure
 
-const generateTodoDOM = function (todo) {
+const generateTodoDOM = (todo) => {
   const todoEl = document.createElement("div");
 
   const checkBox = document.createElement("input");
@@ -75,7 +65,7 @@ const generateTodoDOM = function (todo) {
   checkBox.setAttribute("type", "checkbox");
   checkBox.checked = todo.completed;
   todoEl.appendChild(checkBox);
-  checkBox.addEventListener("change", function () {
+  checkBox.addEventListener("change", () => {
     toogleTodo(todo.id);
     todoSaved(todos);
     renderTodos(todos, filters);
@@ -96,7 +86,7 @@ const generateTodoDOM = function (todo) {
   return todoEl;
 };
 
-const generateSummaryDOM = function (incompleteTodos) {
+const generateSummaryDOM = (incompleteTodos) => {
   const summary = document.createElement("h2");
   summary.textContent = `You have ${incompleteTodos.length} todos left`;
   return summary;
