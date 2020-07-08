@@ -1,8 +1,13 @@
+"use.strict";
 //check for exsting or saved data
 
 const todoGetSaved = () => {
   const todoJSON = localStorage.getItem("todos");
-  return todoJSON !== null ? JSON.parse(todoJSON) : [];
+  try {
+    return todoJSON ? JSON.parse(todoJSON) : [];
+  } catch (e) {
+    return [];
+  }
 };
 
 const todoSaved = () => {
@@ -18,7 +23,7 @@ const removeTodo = (id) => {
 //toggeltodo
 const toogleTodo = (id) => {
   const todo = todos.find((todo) => todo.id === id);
-  if (todo !== undefined) {
+  if (todo) {
     todo.completed = !todo.completed;
   }
 };
@@ -31,8 +36,6 @@ const renderTodos = (todos, filters) => {
     const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
     //debugger;
     return searchTextMatch && hideCompletedMatch;
-
-    //return todo.text.toLowerCase().includes(filters.searchText.toLowerCase());
   });
 
   const incompleteTodos = filteredTodos.filter((todo) => !todo.completed);
